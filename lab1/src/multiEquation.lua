@@ -69,10 +69,11 @@ function multieqMod.MultiEquation:new(variables, terms)
         return variable
     end
 
-    function private:getCommonPartRec(commonNode, border, roots, idx)
+    function private:getCommonPartRec(border, roots)
+        local commonNode
         local variable = private:getLevelVariable(roots)
         if variable ~= nil then
-            commonNode.childs[idx] = termMod.Node:new(variable, 0)
+            commonNode = termMod.Node:new(variable, 0)
 
             local terms = {}
             for i = 1, #roots do
@@ -80,22 +81,25 @@ function multieqMod.MultiEquation:new(variables, terms)
                     utilsMod.appendValue(terms, roots[i])
                 end
             end
-            local x = multieqMod.MultiEquation:new({ termMod.Node:new(variable, 0) }, terms)
-            border:compactAppend(x)
-            return
+            local multieq = multieqMod.MultiEquation:new({ termMod.Node:new(variable, 0) }, terms)
+            border:compactAppend(multieq)
+
+            return commonNode
         end
 
         local root = roots[1]
         local constructor = root.data
-        commonNode.childs[idx] = termMod.Node:new(constructor, constructor:getArgNum())
+        commonNode = termMod.Node:new(constructor, constructor:getArgNum())
 
         for i = 1, #root.childs do
             local childRoots = {}
             for j = 1, #roots do
                 childRoots[j] = roots[j].childs[i]
             end
-            private:getCommonPartRec(commonNode.childs[idx], border, childRoots, i)
+            commonNode.childs[i] = private:getCommonPartRec(border, childRoots)
         end
+
+        return commonNode
     end
 
     function public:getCommonPart()
@@ -111,34 +115,8 @@ function multieqMod.MultiEquation:new(variables, terms)
             roots[i] = private.terms[i]
         end
 
-        local commonPart
         local border = multieqMod.MultiEquations:new()
-        local variable = private:getLevelVariable(roots)
-        if variable ~= nil then
-            commonPart = termMod.Node:new(variable, 0)
-
-            local terms = {}
-            for i = 1, #roots do
-                if roots[i].data ~= variable then
-                    utilsMod.appendValue(terms, roots[i])
-                end
-            end
-            local x = multieqMod.MultiEquation:new({ termMod.Node:new(variable, 0) }, terms)
-            border:compactAppend(x)
-
-            return commonPart, border
-        end
-
-        local root = roots[1]
-        commonPart = termMod.Node:new(root.data, #root.childs)
-
-        for i = 1, #root.childs do
-            local childRoots = {}
-            for j = 1, #roots do
-                childRoots[j] = roots[j].childs[i]
-            end
-            private:getCommonPartRec(commonPart, border, childRoots, i)
-        end
+        local commonPart = private:getCommonPartRec(border, roots)
 
         return commonPart, border
     end
