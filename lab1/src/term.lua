@@ -1,4 +1,4 @@
-local utilsMod = require("utils")
+local utilsMod = require("src.utils")
 
 local termMod = {}
 

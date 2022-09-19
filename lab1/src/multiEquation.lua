@@ -1,5 +1,5 @@
-local utilsMod = require("utils")
-local termMod = require("term")
+local utilsMod = require("src.utils")
+local termMod = require("src.term")
 
 local multieqMod = {}
 
