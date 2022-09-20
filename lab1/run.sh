@@ -17,3 +17,10 @@ cat tests/test3.txt
 echo "--------------------"
 lua src/lab1.lua < tests/test3.txt
 echo "===================="
+echo
+
+echo "====== TEST 4 ======"
+cat tests/test4.txt
+echo "--------------------"
+lua src/lab1.lua < tests/test4.txt
+echo "===================="

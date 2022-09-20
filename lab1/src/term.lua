@@ -98,13 +98,14 @@ function termMod.Node:new(data, childsNum)
 
     function private:constructorToStr()
         local str = public.data:getName()
-
-        str = str .. "("
-        for i = 1, #public.childs do
-            str = str..public.childs[i]:toStr()
-            str = str .. ","
+        if public.data:getArgNum() ~= 0 then
+            str = str .. "("
+            for i = 1, #public.childs do
+                str = str..public.childs[i]:toStr()
+                str = str .. ","
+            end
+            str = utilsMod.replaceChar(str, #str, ")")
         end
-        str = utilsMod.replaceChar(str, #str, ")")
 
         return str
     end
@@ -124,7 +125,12 @@ end
 function termMod.parseTermRec(str, variables, constructors)
     local term
     if #str == 1 then
-        term = termMod.Node:new(variables[str:sub(1, 1)], 0)
+        local symb = str:sub(1, 1)
+        if variables[symb] ~= nil then
+            term = termMod.Node:new(variables[symb], 0)
+        else
+            term = termMod.Node:new(constructors[symb], 0)
+        end
     else
         local constructor = constructors[str:sub(1, 1)]
         local argNum = constructor:getArgNum()
