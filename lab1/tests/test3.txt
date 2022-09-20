@@ -1,0 +1,8 @@
+constructors = f(2), g(1)
+variables = x,y,u,v
+First term: g(u)
+Second term: g(y)
+First term: g(x)
+Second term: v
+First term: f(u,v)
+Second term: f(x,y)
