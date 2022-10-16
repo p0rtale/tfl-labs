@@ -27,6 +27,46 @@ function normalizationMod.Rules:new(rules)
 
     public.rules = rules
 
+    function private:matchConcatEps(regexRoot, ruleRoot, symbols, vars)
+        local regexOperandName = regexRoot.data.name
+        local ruleOperatorName = ruleRoot.data.name
+        if ruleOperatorName ~= "+" then
+            return false
+        end
+
+        local ruleChildLeft = ruleRoot.childs[1]
+        local ruleChildRight = ruleRoot.childs[2]
+        if ruleChildLeft:isOperator() or ruleChildRight:isOperator() then
+            return false
+        end
+
+        -- ruleChildLeft and ruleChildRight are operands
+        local ruleChildLeftName = ruleChildLeft.data.name
+        local ruleChildRightName = ruleChildRight.data.name
+
+        if ruleChildRightName == regexOperandName then
+            local temp = ruleChildRightName
+            ruleChildRightName = ruleChildLeftName
+            ruleChildLeftName = temp
+        end
+
+        if ruleChildLeftName == regexOperandName then
+            if symbols[ruleChildRightName] == nil then
+                if vars[ruleChildRightName] ~= nil then
+                    if vars[ruleChildRightName].data.name == "." then
+                        return true
+                    end
+                    return false
+                end
+                vars[ruleChildRightName] = syntaxTreeMod.Node:new(syntaxTreeMod.Operand:new("."), 0)
+                return true
+            end
+            return false
+        end
+
+        return false
+    end
+
     function private:match(regexRoot, ruleRoot, symbols, vars)
         if ruleRoot:isOperand() then
             local ruleOperandName = ruleRoot.data.name
@@ -58,6 +98,12 @@ function normalizationMod.Rules:new(rules)
                 return true
             end
         end
+
+        -- regexRoot is operand and ruleRoot is operator
+        if private:matchConcatEps(regexRoot, ruleRoot, symbols, vars) then
+            return true
+        end
+
         return false
     end
 
