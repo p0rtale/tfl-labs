@@ -1,5 +1,5 @@
-local stackMod = require("src.stack")
-local syntaxTreeMod = require("src.syntaxTree")
+local stackMod = require("lab2.src.stack")
+local syntaxTreeMod = require("lab2.src.syntaxTree")
 
 local notationMod = {}
 

@@ -1,4 +1,4 @@
-local stackMod = require("src.stack")
+local stackMod = require("lab2.src.stack")
 
 local syntaxTreeMod = {}
 
@@ -120,7 +120,7 @@ function syntaxTreeMod.Tree:new(postfixStr, operators)
         return dict
     end
 
-    function private:constructTree(postfixStr, operators)
+    function private:constructTree(postfixStr)
         local stack = stackMod.Stack:new()
 
         for i = 1, #postfixStr do

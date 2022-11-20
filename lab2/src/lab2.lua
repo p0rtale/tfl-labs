@@ -1,6 +1,6 @@
-local notationMod = require("src.notation")
-local syntaxTreeMod = require("src.syntaxTree")
-local normalizationMod = require("src.normalization")
+local notationMod = require("lab2.src.notation")
+local syntaxTreeMod = require("lab2.src.syntaxTree")
+local normalizationMod = require("lab2.src.normalization")
 
 local operatorsTable = { syntaxTreeMod.Operator:new("|", 2, 1),
                          syntaxTreeMod.Operator:new("+", 2, 2),

@@ -1,5 +1,5 @@
-local syntaxTreeMod = require("src.syntaxTree")
-local queueMod = require("src.queue")
+local syntaxTreeMod = require("lab2.src.syntaxTree")
+local queueMod = require("lab2.src.queue")
 
 
 local normalizationMod = {}
@@ -165,13 +165,13 @@ function normalizationMod.Rules:new(rules)
         return false
     end
 
-    function public:normalize(regexTree)   
-        local isNormalized = false 
+    function public:normalize(regexTree)
+        local isNormalized = false
         while not isNormalized do
             isNormalized = true
             for i = 1, #public.rules do
                 if private:bfs(regexTree, public.rules[i]) then
-                    print(i)
+                    -- print(i)
                     isNormalized = false
                     break
                 end
