@@ -44,6 +44,9 @@ function commutativeImageMod.Equations:new(equations)
             for term, vector in pairs(concatRatioVector) do
                 if ratioVectors[term] == nil then
                     ratioVectors[term] = {}
+                    for j = 1, i - 1 do
+                        appendValue(ratioVectors[term], {0})
+                    end
                 end
                 appendValue(ratioVectors[term], vector)
             end
