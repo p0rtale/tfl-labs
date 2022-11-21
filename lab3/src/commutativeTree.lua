@@ -221,6 +221,27 @@ function commutativeTreeMod.Tree:new(nterm, cfgRuleRights)
         return false
     end
 
+    function private:reduceEpsIterRule(node --[[ , parent, childIndex --]])
+        -- example: (eps)*abc -> abc
+        if node:getOperatorName() == "+" then
+            local concat = node
+            for i = 1, #concat.children do
+                local concatChild = concat.children[i]
+                if concatChild:getOperatorName() == "*" then
+                    local iter = concatChild.children[1]  -- under *
+                    if iter:getOperatorName() == "+" then
+                        local concatUnderIter = iter
+                        if next(concatUnderIter.terms) == nil and #concatUnderIter.children == 0 then
+                            table.remove(concat, i)
+                            return true
+                        end
+                    end
+                end
+            end
+        end
+        return false
+    end
+
     function private:applyRuleBFS(rule)
         local queue = queueMod.Queue:new()
         queue.push({ public.root, nil, nil })
@@ -245,6 +266,7 @@ function commutativeTreeMod.Tree:new(nterm, cfgRuleRights)
             private.alterUnderIterRule,
             private.distributivityRule,
             private.reduceIterHeightRule,
+            private.reduceEpsIterRule,
         }
 
         local isNormalized = false
