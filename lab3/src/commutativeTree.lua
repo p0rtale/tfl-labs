@@ -278,15 +278,12 @@ function commutativeTreeMod.Tree:new(nterm, cfgRuleRights)
         while #queue > 0 do
             local node = table.unpack(queue.pop())
 
-            local isReplaced = false
             if node:getOperatorName() == "+" then
-                isReplaced = private:replaceNtermConcat(node, nterm, substitution)
+                private:replaceNtermConcat(node, nterm, substitution)
             end
 
-            if not isReplaced then
-                for i = 1, #node.children do
-                    queue.push({ node.children[i] })
-                end
+            for i = 1, #node.children do
+                queue.push({ node.children[i] })
             end
         end
     end
