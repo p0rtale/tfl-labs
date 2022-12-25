@@ -34,8 +34,8 @@ function normalizationMod.Rules:new(rules)
             return false
         end
 
-        local ruleChildLeft = ruleRoot.childs[1]
-        local ruleChildRight = ruleRoot.childs[2]
+        local ruleChildLeft = ruleRoot.children[1]
+        local ruleChildRight = ruleRoot.children[2]
         if ruleChildLeft:isOperator() or ruleChildRight:isOperator() then
             return false
         end
@@ -90,8 +90,8 @@ function normalizationMod.Rules:new(rules)
             local ruleOperatorName = ruleRoot.data.name
             local regexOperatorName = regexRoot.data.name
             if ruleOperatorName == regexOperatorName then
-                for i = 1, #regexRoot.childs do
-                    if not private:match(regexRoot.childs[i], ruleRoot.childs[i], symbols, vars) then
+                for i = 1, #regexRoot.children do
+                    if not private:match(regexRoot.children[i], ruleRoot.children[i], symbols, vars) then
                         return false
                     end
                 end
@@ -116,14 +116,14 @@ function normalizationMod.Rules:new(rules)
             end
             return syntaxTreeMod.Node:new(syntaxTreeMod.Operand:new(operandName), 0)
         end
-        local newRoot = syntaxTreeMod.Node:new(ruleRoot.data, #ruleRoot.childs)
+        local newRoot = syntaxTreeMod.Node:new(ruleRoot.data, #ruleRoot.children)
         if ruleRoot.data:isUnary() then
-            newRoot.childs[1] = private:dfsBuild(ruleRoot.childs[1], vars)
+            newRoot.children[1] = private:dfsBuild(ruleRoot.children[1], vars)
             return newRoot
         end
         if ruleRoot.data:isBinary() then
-            newRoot.childs[1] = private:dfsBuild(ruleRoot.childs[1], vars)
-            newRoot.childs[2] = private:dfsBuild(ruleRoot.childs[2], vars)
+            newRoot.children[1] = private:dfsBuild(ruleRoot.children[1], vars)
+            newRoot.children[2] = private:dfsBuild(ruleRoot.children[2], vars)
             return newRoot
         end
     end
@@ -153,13 +153,13 @@ function normalizationMod.Rules:new(rules)
                 if parent == nil then
                     regexTree.root = newSubTree.root
                 else
-                    parent.childs[idx] = newSubTree.root
+                    parent.children[idx] = newSubTree.root
                 end
                 return true
             end
 
-            for i = 1, #node.childs do
-                queue.push({ node.childs[i], node, i })
+            for i = 1, #node.children do
+                queue.push({ node.children[i], node, i })
             end
         end
         return false

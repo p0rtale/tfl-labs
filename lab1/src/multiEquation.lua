@@ -91,12 +91,12 @@ function multieqMod.MultiEquation:new(variables, terms)
         local constructor = root.data
         commonNode = termMod.Node:new(constructor, constructor:getArgNum())
 
-        for i = 1, #root.childs do
+        for i = 1, #root.children do
             local childRoots = {}
             for j = 1, #roots do
-                childRoots[j] = roots[j].childs[i]
+                childRoots[j] = roots[j].children[i]
             end
-            commonNode.childs[i] = private:getCommonPartRec(border, childRoots)
+            commonNode.children[i] = private:getCommonPartRec(border, childRoots)
         end
 
         return commonNode

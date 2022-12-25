@@ -73,20 +73,20 @@ end
 
 syntaxTreeMod.Node = {}
 
-function syntaxTreeMod.Node:new(data, childsNum)
+function syntaxTreeMod.Node:new(data, childNum)
     local public = {}
     local private = {}
 
     local arr = {}
-    for i = 1, childsNum do
+    for i = 1, childNum do
         arr[i] = {}
     end
 
-    public.childs = arr
+    public.children = arr
     public.data = data
 
     function public:isOperand()
-        return #public.childs == 0
+        return #public.children == 0
     end
 
     function public:isOperator()
@@ -129,10 +129,10 @@ function syntaxTreeMod.Tree:new(postfixStr, operators)
                 local operator = public.operators:get(symbol)
                 local operatorNode = syntaxTreeMod.Node:new(operator, operator.arity)
                 if operator:isUnary() then
-                    operatorNode.childs[1] = stack:pop()
+                    operatorNode.children[1] = stack:pop()
                 else
-                    operatorNode.childs[2] = stack:pop()
-                    operatorNode.childs[1] = stack:pop()
+                    operatorNode.children[2] = stack:pop()
+                    operatorNode.children[1] = stack:pop()
                 end
                 stack:push(operatorNode)
             else
@@ -154,10 +154,10 @@ function syntaxTreeMod.Tree:new(postfixStr, operators)
             return node.data.name
         end -- node wraps operator
         if node.data:isUnary() then  
-            return private:dfs(node.childs[1])..node.data.name
+            return private:dfs(node.children[1])..node.data.name
         end
         if node.data:isBinary() then
-            return private:dfs(node.childs[1])..private:dfs(node.childs[2])..node.data.name
+            return private:dfs(node.children[1])..private:dfs(node.children[2])..node.data.name
         end
         error("undefined operator")
     end

@@ -11,8 +11,8 @@ local function varsInTerm(term, vars)
             return false
         end
     else
-        for i = 1, #term.childs do
-            if varsInTerm(term.childs[i], vars) then
+        for i = 1, #term.children do
+            if varsInTerm(term.children[i], vars) then
                 return true
             end
         end

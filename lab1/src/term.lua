@@ -76,16 +76,16 @@ end
 
 termMod.Node = {}
 
-function termMod.Node:new(data, childsNum)
+function termMod.Node:new(data, childNum)
     local public = {}
     local private = {}
 
     local arr = {}
-    for i = 1, childsNum do
+    for i = 1, childNum do
         arr[i] = {}
     end
 
-    public.childs = arr
+    public.children = arr
     public.data = data
 
     function public:isVariable()
@@ -100,8 +100,8 @@ function termMod.Node:new(data, childsNum)
         local str = public.data:getName()
         if public.data:getArgNum() ~= 0 then
             str = str .. "("
-            for i = 1, #public.childs do
-                str = str..public.childs[i]:toStr()
+            for i = 1, #public.children do
+                str = str..public.children[i]:toStr()
                 str = str .. ","
             end
             str = utilsMod.replaceChar(str, #str, ")")
@@ -152,7 +152,7 @@ function termMod.parseTermRec(str, variables, constructors)
                 end
                 last = last + 1
             end
-            term.childs[i] = termMod.parseTermRec(str:sub(first, last - 1), variables, constructors)
+            term.children[i] = termMod.parseTermRec(str:sub(first, last - 1), variables, constructors)
             if i < argNum then
                 first = str:find("%a", last)
                 last = first + 1
