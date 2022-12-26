@@ -1,7 +1,7 @@
-local utilsMod = require("src.utils")
-local termMod = require("src.term")
-local multieqMod = require("src.multiEquation")
-local mmunifMod = require("src.mmUnification")
+local utilsMod = require("lab1.src.utils")
+local termMod = require("lab1.src.term")
+local multieqMod = require("lab1.src.multiEquation")
+local mmunifMod = require("lab1.src.mmUnification")
 
 local function input()
     local constrStr = io.read()

@@ -14,7 +14,7 @@ function notationMod.Notation:new(operators)
 
     function private:isSymbol(c)
         return c ~= "(" and c ~= ")" and not private.operators:isExists(c)
-    end 
+    end
 
     function public:preprocessInfix(infixStr)
         if infixStr == "" then

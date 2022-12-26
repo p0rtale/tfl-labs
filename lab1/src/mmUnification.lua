@@ -1,5 +1,5 @@
-local utilsMod = require("src.utils")
-local multieqMod = require("src.multiEquation")
+local utilsMod = require("lab1.src.utils")
+local multieqMod = require("lab1.src.multiEquation")
 
 local mmunifMod = {}
 
